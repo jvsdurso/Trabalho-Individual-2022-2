@@ -9,6 +9,3 @@ WORKDIR /app
 RUN python -m pip install --upgrade pip
 RUN pip install poetry
 RUN poetry install
-RUN poetry shell
-
-CMD [ "python", "src/main.py" ]
