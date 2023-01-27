@@ -1,0 +1,18 @@
+version: '3.5'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    container_name: postgres
+    env_file:
+      - metabase/config/postgres_exemple.env
+
+  metabase:
+    image: metabase/metabase
+    ports:
+      - 3001:3000
+    env_file:
+      - metabase/config/metabase_database_exemple.env
+    depends_on:
+      - postgres
