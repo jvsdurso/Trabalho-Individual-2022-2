@@ -16,8 +16,6 @@ services:
       - metabase/config/metabase_database_exemple.env
     depends_on:
       - postgres
-    lib:
-      build: .
-      env_file:
-      - .env
-      command: bash -c "poetry config pypi-token.pypi ${TOKEN_PYPI} && poetry version ${VERSION} && poetry build && poetry publish"
+
+  lib:
+    build: .
