@@ -3,6 +3,8 @@
 |--|--|
 |João Vitor de Souza Durso|180123459|
 
+## Observação
+Para tornar o repositório privado, tive que deletar o fork do trabalho e refazer tudo no meu próprio GitHub. Por isso, posso ter esquecido alguma informação ou passo no caminho.
 
 | Item | Peso |
 |---|---|
