@@ -112,3 +112,41 @@ Para ratificar o funcionamento, basta executar:
 ```
 sudo docker-compose up --remove-orphans
 ```
+
+## 3. Publicação da biblioteca
+
+Nesta etapa, inicializou-se o poetry:
+
+```
+poetry init
+```
+
+O comando abaixo serve para adicionar todas as dependências do projeto no arquivo [poetry.lock](poetry.lock).
+```
+poetry add $(cat requirements.txt)
+```
+
+O comando abaixo gera a biblioteca das dependências.
+```
+poetry build
+```
+
+Os dois comandos abaixo são para configurar o token do PyPi e publicar a biblioteca no Pypi.
+```
+poetry config pypi-token.pypi <TOKEN>
+```
+
+```
+poetry publish --skip-existing
+```
+
+Para ratificar o sucesso, acesse o link abaixo para ver a biblioteca publicada:
+
+### Link da Biblioteca Publicada
+https://pypi.org/project/trabalho-individual-2022-2-jvsdurso/
+
+Ou utilize o comando:
+
+```
+pip3 install https://pypi.org/project/trabalho-individual-2022-2-jvsdurso/
+```
