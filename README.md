@@ -306,9 +306,9 @@ name: GCES CI/CD
 on:
   push:
     branches:
-      - master
+      - main
     pull_request:
-      - master    
+      - main
 
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
@@ -331,14 +331,22 @@ jobs:
     - name: Installing sphinx...
       run: sudo apt install --allow-unauthenticated python3-sphinx -y
 
-    - name: Update version pyproject..
+    - name: Check for new Python version...
       run: |
-        pip install requests
-        python update_version.py
+        NEW_VERSION=$(curl --silent https://www.python.org/ftp/python/ | grep -Eo 'python-[0-9\.]+' | sort -V | tail -1)
+        INSTALLED_VERSION=$(python3 --version | awk '{print $2}')
+        if [ "$NEW_VERSION" != "$INSTALLED_VERSION" ]; then
+          echo "Updating Python from $INSTALLED_VERSION to $NEW_VERSION"
+          sudo apt-get update
+          sudo apt-get install -y $NEW_VERSION
+        else
+          echo "Python is up-to-date ($INSTALLED_VERSION)"
+        fi
 
     - name: Installing requirements...
       run: |
-        poetry install
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt 
 
     - name: Watching lint...
       run: |
@@ -352,13 +360,13 @@ jobs:
     - name: Generate documentation...
       run: sphinx-build -b html docs/source docs/build
 
-    - name: Build package...
-      run: poetry build -v
-
     - name: Publishing in poetry...
       run: |
+        poetry version patch
+        poetry build -v
+        poetry install
         poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-        poetry publish --username __token__ -v
+        poetry publish ----skip-existing
 
 ```
 
