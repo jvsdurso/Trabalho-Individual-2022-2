@@ -45,31 +45,22 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt 
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Watching lint...
-        run: |
-          pip install pylint
-          pylint src
-        continue-on-error: true
+    - name: Watching lint...
+      run: |
+        pip install pylint
+        pylint src
+      continue-on-error: true
 
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Testing...
-        run: poetry run pytest --cov 
+    - name: Testing...
+      run: poetry run pytest --cov 
 
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Generate documentation...
-        run: sphinx-build -b html docs/source docs/build
+    - name: Generate documentation...
+      run: sphinx-build -b html docs/source docs/build
 
-      - name: Publishing in poetry...
-        run: |
-          poetry version patch
-          poetry build -v
-          poetry install
-          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-          poetry publish ----skip-existing
+    - name: Publishing in poetry...
+      run: |
+        poetry version patch
+        poetry build -v
+        poetry install
+        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+        poetry publish ----skip-existing
