@@ -3,9 +3,9 @@ name: GCES CI/CD
 on:
   push:
     branches:
-      - master
+      - main
     pull_request:
-      - master
+      - main
 
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Copy master...
+    - name: Copy main...
       uses: actions/checkout@v2
 
     - name: Config python...
