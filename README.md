@@ -55,3 +55,60 @@ use admin
 db.auth('lappis','l4pp1s')
 ```
 
+## 2. Containerização da biblioteca + Banco
+
+Nessa etapa, criou-se o [Dockerfile](Dockerfile). Depois adicionou-se alterações ao [docker-compose.yaml](docker-compose.yaml) para adicionar a biblioteca quando rodar o Docker.
+
+### docker-compose.yaml
+```yaml
+version: '3.5'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    container_name: postgres
+    env_file:
+      - metabase/config/postgres_exemple.env
+
+  metabase:
+    image: metabase/metabase
+    ports:
+      - 3001:3000
+    env_file:
+      - metabase/config/metabase_database_exemple.env
+    depends_on:
+      - postgres
+
+  lib:
+    build: .
+```
+
+### Dockerfile
+```Dockerfile
+FROM python:3.8 AS python
+
+RUN mkdir /app
+
+COPY . /app
+
+WORKDIR /app
+
+RUN python -m pip install --upgrade pip \
+    pip install poetry
+
+RUN poetry install
+
+RUN apt update -y
+RUN apt-get install python3-sphinx -y
+RUN apt-get install doxygen sphinx-common -y
+
+RUN doxygen doxygen.conf -y
+RUN sphinx-build -b html docs/source docs/build
+```
+
+Para ratificar o funcionamento, basta executar:
+
+```
+sudo docker-compose up --remove-orphans
+```
