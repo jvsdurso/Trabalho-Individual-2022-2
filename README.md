@@ -366,7 +366,7 @@ jobs:
         poetry build -v
         poetry install
         poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-        poetry publish ----skip-existing
+        poetry publish --skip-existing
 
 ```
 
