@@ -292,6 +292,7 @@ source_suffix = '.rst'
 
 # The master toctree document.
 master_doc = 'index'
+
 ```
 
 ## 5. Integração Contínua (Build, Test, Lint, Documentação)
