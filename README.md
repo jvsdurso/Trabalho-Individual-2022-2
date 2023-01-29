@@ -375,3 +375,4 @@ jobs:
 ## 6. Deploy Contínuo
 
 O deploy contínuo foi feito no mesmo arquivo [ci-cd.yml](.github/workflows/ci-cd.yml) supracitado.
+
