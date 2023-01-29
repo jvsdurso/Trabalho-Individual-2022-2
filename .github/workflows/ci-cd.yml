@@ -42,22 +42,27 @@ jobs:
 
     - name: Installing requirements...
       run: |
-        poetry install
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt 
 
+  lint:
     - name: Watching lint...
       run: |
         pip install pylint
         pylint src
       continue-on-error: true
 
+  tests:
     - name: Testing...
       run: poetry run pytest --cov 
 
+  docs:
     - name: Generate documentation...
       run: sphinx-build -b html docs/source docs/build
 
     - name: Publishing in poetry...
       run: |
+        poetry version patch
         poetry build -v
         poetry install
         poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
