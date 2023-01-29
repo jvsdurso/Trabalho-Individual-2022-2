@@ -294,3 +294,76 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 ```
+
+## 5. Integração Contínua (Build, Test, Lint, Documentação)
+
+Para criar a integração contínua, criou-se o arquivo [ci-cd.yml](.github/workflows/ci-cd.yml) que acionará o GitHub Actions a cada atualização da master.
+
+### ci-cd.yml
+```yml
+name: GCES CI/CD
+
+on:
+  push:
+    branches:
+      - master
+    pull_request:
+      - master    
+
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Copy master...
+      uses: actions/checkout@v2
+
+    - name: Config python...
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Installing poetry...
+      run: python -m pip install poetry
+
+    - name: Installing sphinx...
+      run: sudo apt install --allow-unauthenticated python3-sphinx -y
+
+    - name: Update version pyproject..
+      run: |
+        pip install requests
+        python update_version.py
+
+    - name: Installing requirements...
+      run: |
+        poetry install
+
+    - name: Watching lint...
+      run: |
+        pip install pylint
+        pylint src
+      continue-on-error: true
+
+    - name: Testing...
+      run: poetry run pytest --cov 
+
+    - name: Generate documentation...
+      run: sphinx-build -b html docs/source docs/build
+
+    - name: Build package...
+      run: poetry build -v
+
+    - name: Publishing in poetry...
+      run: |
+        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+        poetry publish --username __token__ -v
+
+```
+
+É possível ver o GitHub Actions funcionando no [link](https://github.com/jvsdurso/Trabalho-Individual-2022-2/actions).
+
+## 6. Deploy Contínuo
+
+O deploy contínuo foi feito no mesmo arquivo [ci-cd.yml](.github/workflows/ci-cd.yml) supracitado.
