@@ -58,7 +58,7 @@ jobs:
 
     - name: Publishing in poetry...
       run: |
-        poetry build
+        poetry build -v
         poetry install
         poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
         poetry publish ----skip-existing

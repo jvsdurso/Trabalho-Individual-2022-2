@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "trabalho-individual-2022-2-jvsdurso"
 version = "0.1.0"
-description = ""
+description = "Dependências deste projeto."
 authors = ["jvsdurso <jvsdurso@gmail.com>"]
 readme = "README.md"
 packages = [{include = "src"}]
@@ -55,6 +55,8 @@ tqdm = "4.64.1"
 urllib3 = "1.26.13"
 whatlies = "0.7.0"
 zipp = "3.11.0"
+sphinx-autodoc-typehints = "1.21.8"
+pylint = "^2.15.10"
 
 
 [build-system]
